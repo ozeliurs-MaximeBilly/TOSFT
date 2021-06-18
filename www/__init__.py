@@ -1,15 +1,20 @@
 from flask import Flask, redirect, url_for, render_template, request, session, flash
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.secret_key = "secret"
+with open(".env", "r", encoding="utf8") as env:
+	app.secret_key = env.read()
+
 
 @app.route("/")
 def homepage():
 	return render_template("index.html")
 
+
 @app.route("/about/")
 def about():
 	return render_template("about.html")
+
 
 @app.route("/login/", methods=["GET","POST"])
 def login():
@@ -20,6 +25,7 @@ def login():
 		return redirect(url_for("user"))
 	else:
 		return render_template("login.html")
+
 
 @app.route("/register/", methods=["GET","POST"])
 def resister():
@@ -32,6 +38,7 @@ def resister():
 	else:
 		return render_template("register.html")
 
+
 @app.route("/user/")
 def user():
 	out = ""
@@ -39,6 +46,7 @@ def user():
 		print(session)
 		out += str(el) + ": " + str(session[el]) + ", "
 	return f"<p>{out}</p>"
+
 
 @app.route("/logout/")
 def logout():
