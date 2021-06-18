@@ -1,0 +1,50 @@
+from flask import Flask, redirect, url_for, render_template, request, session, flash
+
+app = Flask(__name__)
+app.secret_key = "secret"
+
+@app.route("/")
+def homepage():
+	return render_template("index.html")
+
+@app.route("/about/")
+def about():
+	return render_template("about.html")
+
+@app.route("/login/", methods=["GET","POST"])
+def login():
+	if request.method == "POST":
+		session["username"] = request.form["username"]
+		session["password"] = request.form["password"]
+		flash("You have been logged in !")
+		return redirect(url_for("user"))
+	else:
+		return render_template("login.html")
+
+@app.route("/register/", methods=["GET","POST"])
+def resister():
+	if request.method == "POST":
+		session["username"] = request.form["username"]
+		session["email"] = request.form["email"]
+		session["password"] = request.form["password"]
+		flash("You have been registered !")
+		return redirect(url_for("user"))
+	else:
+		return render_template("register.html")
+
+@app.route("/user/")
+def user():
+	out = ""
+	for el in session:
+		print(session)
+		out += str(el) + ": " + str(session[el]) + ", "
+	return f"<p>{out}</p>"
+
+@app.route("/logout/")
+def logout():
+	session.clear()
+	flash("You have been logged out !")
+	return redirect(url_for("homepage"))
+
+if __name__ == "__main__":
+	app.run(debug=True)

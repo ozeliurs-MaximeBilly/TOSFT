@@ -1,0 +1,14 @@
+{% extends "template.html" %}
+{% block title %}The Open Source Fit Tracker{% endblock %}
+{% block content %}
+<h1>Login</h1>
+<form action="/login/" method="POST">
+	<label for="username">Login :</label>
+	<input type="text" name="username" required>
+	<label for="password">Password :</label>
+	<input type="password" name="password" required>
+	<div class="is-center" style="margin-top: 20px">
+		<input type="submit" name="">
+	</div>
+</form>
+{% endblock %}
