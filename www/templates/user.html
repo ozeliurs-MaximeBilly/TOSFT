@@ -1,5 +1,9 @@
 {% extends "template.html" %}
 {% block title %}The Open Source Fit Tracker{% endblock %}
 {% block content %}
-<p>This is the user page.</p>
+    <h1>Welcome, {{ session["username"] }}.</h1>
+    <div class="row card is-vertical-align" style="margin-top: 20px">
+        <div class="col is-marginless"><h4>Weight Manager</h4></div>
+        <div class="col-2 is-center is-marginless"><a href="/weight" class="button primary">Go</a></div>
+    </div>
 {% endblock %}
