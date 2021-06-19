@@ -4,33 +4,33 @@
     <h2>Your Weight Progression.</h2>
     <div class="card">
         <canvas id="myChart" width=auto height=100px></canvas>
-    <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: [{{ labels | safe }}],
-                datasets: [{
-                    label: 'Weight',
-                    data: [{{ data | safe }}],
-                    borderColor: getComputedStyle(document.documentElement).getPropertyValue('--color-primary'),
-                    tension: 0.3,
-                    spanGaps: true
-                }]
-            },
-        });
-    </script>
+        <script>
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [{{ labels | safe }}],
+                    datasets: [{
+                        label: 'Weight',
+                        data: [{{ data | safe }}],
+                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--color-primary'),
+                        tension: 0.3,
+                        spanGaps: true
+                    }]
+                },
+            });
+        </script>
     </div>
     <div class="card" style="margin-top: 20px">
         <form action="/weight/" method="POST">
             <div class="row">
                 <div class="col">
                     <label for="weight"></label>
-                    <input type="number" id="weight">
+                    <input type="number" name="weight" required>
                 </div>
                 <div class="col">
                     <label for="date"></label>
-                    <input type="date" id="date">
+                    <input type="date" name="date" required>
                 </div>
                 <div class="col-2"><input type="submit" value="Record Weight"></div>
             </div>

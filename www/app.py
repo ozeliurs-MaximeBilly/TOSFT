@@ -2,7 +2,7 @@ from flask import Flask, redirect, url_for, render_template, request, session, f
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv
 import os
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 
 app = Flask(__name__)
 
@@ -104,7 +104,9 @@ def user():
 @app.route("/weight/", methods=["GET", "POST"])
 def weight():
     if request.method == "POST":
-
+        nwei = Weight(date=datetime.strptime(request.form["date"], '%Y-%m-%d').date(), value=request.form["weight"], uid=session["id"])
+        db.session.add(nwei)
+        db.session.commit()
         return redirect(url_for("weight"))
     else:
         na = na30()
