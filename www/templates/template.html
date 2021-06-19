@@ -1,8 +1,9 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
 	<title>{% block title %}{% endblock %}</title>
 	<link rel="stylesheet" href="https://unpkg.com/chota@latest">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 	<nav class="nav">
@@ -25,12 +26,19 @@
 	</nav>
 	<main style="min-height: 100vh">
 		<div class="container">
-			{% with messages = get_flashed_messages() %}
+			{% with messages = get_flashed_messages(with_categories=true) %}
 				{% if messages %}
-					{% for msg in messages %}
-						<div class="card bg-success" style="display: flex; justify-content: center;">
-							<p class="text-white">{{msg}}</p>
-						</div>
+					{% for cat, msg in messages %}
+                        {% if cat == "success" %}
+                            <div class="card bg-success" style="display: flex; justify-content: center;">
+                        {% elif cat == "error" %}
+                            <div class="card bg-error" style="display: flex; justify-content: center;">
+                        {% else %}
+                            <div class="card bg-grey" style="display: flex; justify-content: center;">
+                        {% endif %}
+                            <p class="text-white">{{msg}}</p>
+                        </div>
+
 					{% endfor %}
 				{% endif %}
 			{% endwith %}
@@ -40,7 +48,7 @@
 		</div>
 	</main>
 	<footer style="background-color: var(--color-primary); display: flex; justify-content: space-around;">
-		<a href="https://jenil.github.io/chota/" class="text-white">Made with chota.</a>
+		<a href="https://creativecommons.org/publicdomain/zero/1.0/" class="text-white">CC0 1.0 Universal</a>
 	</footer>
 </body>
 </html>

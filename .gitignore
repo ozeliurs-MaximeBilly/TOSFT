@@ -1,5 +1,5 @@
 # ignore all logs
-*.sqlite3
+*.sqlite
 
 # ignore env files
 .env

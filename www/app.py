@@ -8,7 +8,16 @@ app = Flask(__name__)
 load_dotenv()
 app.secret_key = os.environ.get("SECRET_KEY")
 
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
+db = SQLAlchemy(app)
 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String, unique=True, nullable=False)
+    email = db.Column(db.String, unique=True, nullable=False)
+    password = db.Column(db.String, unique=True, nullable=False)
+
+# Functions for website rendering
 @app.route("/")
 def homepage():
     return render_template("index.html")
@@ -24,20 +33,32 @@ def login():
     if request.method == "POST":
         session["username"] = request.form["username"]
         session["password"] = request.form["password"]
-        flash("You have been logged in !")
+        flash("You have been logged in !", "success")
         return redirect(url_for("user"))
     else:
         return render_template("login.html")
 
 
 @app.route("/register/", methods=["GET", "POST"])
-def resister():
+def register():
     if request.method == "POST":
         session["username"] = request.form["username"]
         session["email"] = request.form["email"]
         session["password"] = request.form["password"]
-        flash("You have been registered !")
-        return redirect(url_for("user"))
+
+        existsing_user = User.query.filter_by(username=session["username"]).first()
+
+        if existsing_user:
+            flash("Username already taken.", "error")
+            session.clear()
+            return redirect(url_for("register"))
+        else:
+            nusr = User(username=session["username"], email=session["email"], password=session["password"])
+            db.session.add(nusr)
+            db.session.commit()
+
+            flash("You have been registered !", "success")
+            return redirect(url_for("user"))
     else:
         return render_template("register.html")
 
@@ -50,9 +71,11 @@ def user():
 @app.route("/logout/")
 def logout():
     session.clear()
-    flash("You have been logged out !")
+    flash("You have been logged out !", "success")
     return redirect(url_for("homepage"))
 
 
 if __name__ == "__main__":
+    if not (db.engine.has_table('user')):
+        db.create_all()
     app.run(debug=True)
