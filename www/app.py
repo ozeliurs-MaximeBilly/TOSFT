@@ -44,11 +44,7 @@ def resister():
 
 @app.route("/user/")
 def user():
-    out = ""
-    for el in session:
-        print(session)
-        out += str(el) + ": " + str(session[el]) + ", "
-    return f"<p>{out}</p>"
+    return render_template("info.html")
 
 
 @app.route("/logout/")

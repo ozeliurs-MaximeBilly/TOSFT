@@ -1,0 +1,21 @@
+{% extends "template.html" %}
+{% block title %}The Open Source Fit Tracker{% endblock %}
+{% block content %}
+    <h1>Info on my Session</h1>
+    <table>
+        <tbody>
+            <thead>
+                <tr>
+                    <th>Session Variable</th>
+                    <th>Variable Value</th>
+                </tr>
+            </thead>
+            {% for info in session %}
+                <tr>
+                    <td>{{ info }}</td>
+                    <td>{{ session[info] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
