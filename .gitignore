@@ -6,3 +6,6 @@
 
 # ignore pycharm idea file
 /.idea
+
+# ignore my test area
+www/testArea.py

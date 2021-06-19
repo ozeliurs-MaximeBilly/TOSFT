@@ -13,9 +13,14 @@ db = SQLAlchemy(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, unique=True, nullable=False)
-    email = db.Column(db.String, unique=True, nullable=False)
-    password = db.Column(db.String, unique=True, nullable=False)
+    username = db.Column(db.String)
+    email = db.Column(db.String)
+    password = db.Column(db.String)
+
+class Weight(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.Float)
+    uid = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 # Functions for website rendering
 @app.route("/")
@@ -31,10 +36,21 @@ def about():
 @app.route("/login/", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        session["username"] = request.form["username"]
-        session["password"] = request.form["password"]
-        flash("You have been logged in !", "success")
-        return redirect(url_for("user"))
+
+        existsing_user = User.query.filter_by(username=request.form["username"]).first()
+
+        if existsing_user:
+            if existsing_user.password == request.form["password"]:
+                flash("You have been logged in !", "success")
+                session["username"] = request.form["username"]
+                session["password"] = request.form["password"]
+                return redirect(url_for("user"))
+            else:
+                flash("Wrong Password.", "error")
+                return redirect(url_for("login"))
+        else:
+            flash("Wrong Username.", "error")
+            return redirect(url_for("login"))
     else:
         return render_template("login.html")
 
@@ -42,20 +58,18 @@ def login():
 @app.route("/register/", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        session["username"] = request.form["username"]
-        session["email"] = request.form["email"]
-        session["password"] = request.form["password"]
-
-        existsing_user = User.query.filter_by(username=session["username"]).first()
+        existsing_user = User.query.filter_by(username=request.form["username"]).first()
 
         if existsing_user:
             flash("Username already taken.", "error")
-            session.clear()
             return redirect(url_for("register"))
         else:
-            nusr = User(username=session["username"], email=session["email"], password=session["password"])
+            nusr = User(username=request.form["username"], email=request.form["email"], password=request.form["password"])
             db.session.add(nusr)
             db.session.commit()
+
+            session["username"] = request.form["username"]
+            session["password"] = request.form["password"]
 
             flash("You have been registered !", "success")
             return redirect(url_for("user"))
@@ -63,9 +77,15 @@ def register():
         return render_template("register.html")
 
 
-@app.route("/user/")
+@app.route("/user/", methods=["GET", "POST"])
 def user():
-    return render_template("info.html")
+    return render_template("user.html")
+
+
+@app.route("/info/")
+def info():
+    current_user = User.query.filter_by(username=session["username"]).first()
+    return render_template("info.html", id=current_user.id, username=current_user.username, email=current_user.email, password=current_user.password)
 
 
 @app.route("/logout/")
