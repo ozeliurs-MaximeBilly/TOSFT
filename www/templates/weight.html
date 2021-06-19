@@ -15,7 +15,9 @@
                         data: [{{ data | safe }}],
                         borderColor: getComputedStyle(document.documentElement).getPropertyValue('--color-primary'),
                         tension: 0.3,
-                        spanGaps: true
+                        spanGaps: true,
+                        fill: true,
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-lightGrey-50')
                     }]
                 },
             });
