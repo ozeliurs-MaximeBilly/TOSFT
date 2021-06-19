@@ -34,6 +34,13 @@ def last30():
     return list30
 
 
+def na30():
+    list30 = []
+    for i in range(31):
+        list30.append("'N/A'")
+    return list30
+
+
 # Functions for website rendering
 @app.route("/")
 def homepage():
@@ -100,11 +107,14 @@ def weight():
 
         return redirect(url_for("weight"))
     else:
+        na = na30()
         uweight = Weight.query.filter_by(uid=session["id"])
         if uweight:
             for w in uweight:
-                print(w.value)
-        return render_template("weight.html", labels="'" + "', '".join(last30()) + "'", data="1, 2, 'N/A' , 2.5, 6, 3")
+                if str(w.date) in last30():
+                    na[last30().index(str(w.date))] = str(w.value)
+
+        return render_template("weight.html", labels="'" + "', '".join(last30()) + "'", data=", ".join(na))
 
 
 @app.route("/info/")
