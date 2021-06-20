@@ -3,12 +3,14 @@
 {% block content %}
 <h1>Login</h1>
 <form action="/login/" method="POST">
-	<label for="username">Username :</label>
-	<input type="text" name="username" required>
-	<label for="password">Password :</label>
-	<input type="password" name="password" required>
-	<div class="is-center" style="margin-top: 20px">
-		<input type="submit" name="">
-	</div>
+    <fieldset id="forms__input">
+        <label for="username">Username :</label>
+        <input type="text" name="username" required>
+        <label for="password">Password :</label>
+        <input type="password" name="password" required>
+        <div class="is-center" style="margin-top: 20px; margin-bottom: 20px">
+            <input type="submit" name="">
+        </div>
+    </fieldset>
 </form>
 {% endblock %}

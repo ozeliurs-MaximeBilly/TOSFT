@@ -116,7 +116,9 @@ def weight():
                 if str(w.date) in last30():
                     na[last30().index(str(w.date))] = str(w.value)
 
-        return render_template("weight.html", labels="'" + "', '".join(last30()) + "'", data=", ".join(na))
+        weights = Weight.query.filter_by(uid=session["id"]).order_by(Weight.date.desc())
+
+        return render_template("weight.html", labels="'" + "', '".join(last30()) + "'", data=", ".join(na), weights=weights)
 
 
 @app.route("/info/")
