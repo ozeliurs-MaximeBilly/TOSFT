@@ -1,11 +1,11 @@
 # ignore all logs
-*.sqlite
+data
 
 # ignore env files
 .env
 
 # ignore pycharm idea file
-/.idea
+.idea
 
 # ignore my test area
 www/testArea.py
