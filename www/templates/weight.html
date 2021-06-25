@@ -1,7 +1,7 @@
 {% extends "template.html" %}
 {% block title %}The Open Source Fit Tracker{% endblock %}
 {% block content %}
-    <h2>Your Weight Progression.</h2>
+    <h2 xmlns="http://www.w3.org/1999/html">Your Weight Progression.</h2>
     <div class="card">
         <canvas id="myChart" width=auto height=100px></canvas>
         <script>
@@ -14,7 +14,7 @@
                         label: 'Weight',
                         data: [{{ data | safe }}],
                         borderColor: getComputedStyle(document.documentElement).getPropertyValue('--color-primary'),
-                        tension: 0.3,
+                        tension: 0.5,
                         spanGaps: true,
                         fill: true,
                         backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-lightGrey-50')
@@ -26,7 +26,7 @@
     <div class="card" style="margin-top: 20px">
         <form action="/weight/" method="POST">
             <div class="row">
-                <div class="col">
+                <div class="col-2">
                     <label for="weight"></label>
                     <input type="number" step="0.1" name="weight" required>
                 </div>
@@ -34,7 +34,7 @@
                     <label for="date"></label>
                     <input type="date" name="date" required>
                 </div>
-                <div class="col-2"><input type="submit" value="Record Weight"></div>
+                <div class="col-3" style="display: flex;justify-content: center"><input type="submit" value="Record Weight"></div>
             </div>
         </form>
     </div>
@@ -52,7 +52,9 @@
                 <tr>
                     <td>{{ w.date }}</td>
                     <td>{{ w.value }}</td>
-                    <td>Bouton</td>
+                    <td style="width: 120px">
+                        <form action="/weight/" method="POST"><button type="submit" name="del" value="{{ w.id }}" class="button error">Delete</button></form>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

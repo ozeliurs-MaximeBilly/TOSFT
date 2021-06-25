@@ -4,7 +4,11 @@
 <h1>Welcome to The Open Source Fit Tracker</h1>
 <p>This is the homepage.</p>
 <div class="is-horizontal-align">
-	<a href="/login" class="button primary">Get Started</a>
-	<a href="/about" class="button outline primary">Learn More</a>
+	{% if session["username"] %}
+        <a href="/user" class="button outline primary">Get started here, {{ session["username"] }}.</a>
+    {% else %}
+        <a href="/login" class="button primary">Get Started</a>
+        <a href="/about" class="button outline primary">Learn More</a>
+    {% endif %}
 </div>
 {% endblock %}

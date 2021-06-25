@@ -104,10 +104,17 @@ def user():
 @app.route("/weight/", methods=["GET", "POST"])
 def weight():
     if request.method == "POST":
-        nwei = Weight(date=datetime.strptime(request.form["date"], '%Y-%m-%d').date(), value=request.form["weight"], uid=session["id"])
-        db.session.add(nwei)
-        db.session.commit()
-        return redirect(url_for("weight"))
+        if not "del" in request.form:
+            nwei = Weight(date=datetime.strptime(request.form["date"], '%Y-%m-%d').date(), value=request.form["weight"], uid=session["id"])
+            db.session.add(nwei)
+            db.session.commit()
+            return redirect(url_for("weight"))
+        else:
+            if Weight.query.filter_by(id=request.form["del"]).first().uid == session["id"]:
+                db.session.delete(Weight.query.filter_by(id=request.form["del"]).first())
+                db.session.commit()
+                flash("Weight record has been deleted !","success")
+            return redirect(url_for("weight"))
     else:
         na = na30()
         uweight = Weight.query.filter_by(uid=session["id"])
@@ -136,4 +143,4 @@ def logout():
 
 if __name__ == "__main__":
     db.create_all()
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")

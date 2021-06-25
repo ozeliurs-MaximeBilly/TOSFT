@@ -7,7 +7,7 @@
     <style>:root{--color-lightGrey-50: RGBA(210, 214, 221, 0.5);}</style>
 </head>
 <body>
-	<nav class="nav">
+	<nav class="nav" style="background-color: #cef7e4">
 		<div class="nav-left">
 			<a class="brand" href="/">TOSFT</a>
 			<div class="tabs">
@@ -31,11 +31,11 @@
 				{% if messages %}
 					{% for cat, msg in messages %}
                         {% if cat == "success" %}
-                            <div class="card bg-success" style="display: flex; justify-content: center;">
+                            <div class="card bg-success" style="display: flex; justify-content: center; margin-top: 20px">
                         {% elif cat == "error" %}
-                            <div class="card bg-error" style="display: flex; justify-content: center;">
+                            <div class="card bg-error" style="display: flex; justify-content: center; margin-top: 20px">
                         {% else %}
-                            <div class="card bg-grey" style="display: flex; justify-content: center;">
+                            <div class="card bg-grey" style="display: flex; justify-content: center; margin-top: 20px">
                         {% endif %}
                             <p class="text-white">{{msg}}</p>
                         </div>
